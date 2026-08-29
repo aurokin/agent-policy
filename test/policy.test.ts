@@ -26,6 +26,6 @@ test("sections are separated and ordered once", () => {
 });
 
 test("second-opinion policy remains harness-neutral", () => {
-  assert.match(SECOND_OPINIONS, /rubber-duck, advisor, or consult/);
+  assert.match(SECOND_OPINIONS, /second-opinion mechanism/);
   assert.doesNotMatch(SECOND_OPINIONS, /pi-setup|before_agent_start/);
 });
