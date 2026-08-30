@@ -23,20 +23,26 @@ export const ENGINEERING_POLICY_BULLETS = [
   "- Clearly separate what you confirmed from what you did not confirm.",
 ];
 
-export const ORCHESTRATION_HEADER = "## Orchestration";
+export const DELEGATION_HEADER = "## Delegation";
 
-export const ORCHESTRATION_BULLETS = [
-  "- Work solo by default. Orchestrate when the work has useful independent parts and parallel effort would materially improve speed or quality.",
-  "- If the user asks for a team, parallel agents, or delegation, orchestrate. If the task has no useful independent subtask, say so and work solo instead of inventing one.",
+export const DELEGATION_BULLETS = [
+  "- Work solo by default. Delegate when the work has useful independent parts and parallel effort would materially improve speed or quality.",
+  "- If the user asks for a team, parallel agents, or delegation, delegate. If the task has no useful independent subtask, say so and work solo instead of inventing one.",
   "- Delegate concrete, bounded subtasks that can run independently. Keep tightly coupled work or work that cannot be briefed clearly in the current session.",
   "- Do not delegate routine operations that are faster in context, such as reading one normal-sized file, running one test, linting, or typechecking.",
   "- Use the fewest agents needed to obtain the benefit. Give each agent a distinct purpose.",
   "- When research or heavy reading feeds a decision, delegate the evidence gathering and keep the decision in the current session.",
   "- Use individual subagents for one or a few independent tasks. When a workflow tool is available, use it for ordered phases, dynamic fan-out, or structured handoffs.",
   "- Before agents edit files in parallel, assign non-overlapping ownership. Keep coupled edits serial.",
-  "- If the user requested orchestration and no suitable mechanism is available, say so. Do not silently substitute solo work.",
+  "- If the user requested delegation and no suitable mechanism is available, say so. Do not silently substitute solo work.",
   "- Delegation sends the prompt and any files read to the child provider. Do not send credentials, secrets, or content from private knowledge roots without explicit approval for that provider.",
 ];
+
+/** @deprecated Use DELEGATION_HEADER. */
+export const ORCHESTRATION_HEADER = DELEGATION_HEADER;
+
+/** @deprecated Use DELEGATION_BULLETS. */
+export const ORCHESTRATION_BULLETS = DELEGATION_BULLETS;
 
 export const SECOND_OPINIONS_HEADER = "## Second Opinions";
 
@@ -71,7 +77,10 @@ export const TESTING_GUIDELINES_BULLETS = [
 
 export const COMMUNICATION_STANDARDS_HEADER = "## Communication Standards";
 
+// `unslop` is required shared policy vocabulary. Consumers must expose the skill.
 export const COMMUNICATION_STANDARDS_BULLETS = [
+  "- These standards apply only to user-facing messages, never to agent-to-agent messages.",
+  "- Before sending each user-facing message, invoke and apply the `unslop` skill, then apply every remaining standard in this section.",
   "- Passing checks show that the code runs under those checks. They do not prove that the code does what the user asked.",
   "- State which relevant behavior you did not verify.",
   "- Say when you are guessing.",
@@ -113,11 +122,12 @@ export const ENGINEERING_POLICY = [
   ...ENGINEERING_POLICY_BULLETS,
 ].join("\n");
 
-export const ORCHESTRATION = [
-  ORCHESTRATION_HEADER,
-  "",
-  ...ORCHESTRATION_BULLETS,
-].join("\n");
+export const DELEGATION = [DELEGATION_HEADER, "", ...DELEGATION_BULLETS].join(
+  "\n",
+);
+
+/** @deprecated Use DELEGATION. */
+export const ORCHESTRATION = DELEGATION;
 
 export const SECOND_OPINIONS = [
   SECOND_OPINIONS_HEADER,
@@ -163,7 +173,7 @@ export const KNOWN_PERFORMANCE_PITFALLS = [
 
 export const GLOBAL_INSTRUCTION_SECTIONS = [
   ENGINEERING_POLICY,
-  ORCHESTRATION,
+  DELEGATION,
   SECOND_OPINIONS,
   SAFETY_RULES,
   TESTING_GUIDELINES,

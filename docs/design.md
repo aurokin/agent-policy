@@ -19,6 +19,9 @@ can omit sections that do not apply to a constrained child or profile.
 instructions. Its bytes must equal `GLOBAL_INSTRUCTION_RULES` plus one trailing
 newline. The parity test protects fleet drift detection from false changes.
 
+The `unslop` skill name is shared policy vocabulary, not a harness-specific
+tool name. Any integration that installs this policy must expose that skill.
+
 ## Rule selection
 
 Keep the set focused. Add a rule when capable models otherwise make the same
@@ -26,7 +29,7 @@ costly mistake and when a tool schema or harness instruction cannot express it
 more precisely. Use as many sentences as the idea needs instead of compressing
 several obligations into one dense bullet.
 
-The orchestration and second-opinion sections describe capabilities
+The delegation and second-opinion sections describe capabilities
 conditionally. Names such as `rubber-duck`, `advisor`, and `consult` are shared
 policy vocabulary; each harness decides which mechanisms it implements.
 

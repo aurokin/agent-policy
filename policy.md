@@ -21,17 +21,17 @@
 - Spend verification effort on findings that affect the decision. Do not verify every result by default.
 - Clearly separate what you confirmed from what you did not confirm.
 
-## Orchestration
+## Delegation
 
-- Work solo by default. Orchestrate when the work has useful independent parts and parallel effort would materially improve speed or quality.
-- If the user asks for a team, parallel agents, or delegation, orchestrate. If the task has no useful independent subtask, say so and work solo instead of inventing one.
+- Work solo by default. Delegate when the work has useful independent parts and parallel effort would materially improve speed or quality.
+- If the user asks for a team, parallel agents, or delegation, delegate. If the task has no useful independent subtask, say so and work solo instead of inventing one.
 - Delegate concrete, bounded subtasks that can run independently. Keep tightly coupled work or work that cannot be briefed clearly in the current session.
 - Do not delegate routine operations that are faster in context, such as reading one normal-sized file, running one test, linting, or typechecking.
 - Use the fewest agents needed to obtain the benefit. Give each agent a distinct purpose.
 - When research or heavy reading feeds a decision, delegate the evidence gathering and keep the decision in the current session.
 - Use individual subagents for one or a few independent tasks. When a workflow tool is available, use it for ordered phases, dynamic fan-out, or structured handoffs.
 - Before agents edit files in parallel, assign non-overlapping ownership. Keep coupled edits serial.
-- If the user requested orchestration and no suitable mechanism is available, say so. Do not silently substitute solo work.
+- If the user requested delegation and no suitable mechanism is available, say so. Do not silently substitute solo work.
 - Delegation sends the prompt and any files read to the child provider. Do not send credentials, secrets, or content from private knowledge roots without explicit approval for that provider.
 
 ## Second Opinions
@@ -61,6 +61,8 @@
 
 ## Communication Standards
 
+- These standards apply only to user-facing messages, never to agent-to-agent messages.
+- Before sending each user-facing message, invoke and apply the `unslop` skill, then apply every remaining standard in this section.
 - Passing checks show that the code runs under those checks. They do not prove that the code does what the user asked.
 - State which relevant behavior you did not verify.
 - Say when you are guessing.
