@@ -1,6 +1,6 @@
 {
   "name": "@aurokin/agent-policy",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -8,11 +8,13 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./policy.md": "./policy.md"
+    "./policy.md": "./policy.md",
+    "./profiles/copilot.md": "./profiles/copilot.md"
   },
   "files": [
     "dist",
-    "policy.md"
+    "policy.md",
+    "profiles"
   ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
