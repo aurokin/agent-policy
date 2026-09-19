@@ -1,0 +1,9 @@
+import { COPILOT_INSTRUCTION_SECTIONS } from "./copilot.ts";
+import { GLOBAL_INSTRUCTION_SECTIONS } from "./policy.ts";
+
+export const COPILOT_PROFILE_SECTIONS = [
+  ...GLOBAL_INSTRUCTION_SECTIONS,
+  ...COPILOT_INSTRUCTION_SECTIONS,
+] as const;
+
+export const COPILOT_PROFILE = COPILOT_PROFILE_SECTIONS.join("\n\n");

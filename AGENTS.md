@@ -11,12 +11,12 @@
 | Build         | `pnpm build`   |
 | Format        | `pnpm format`  |
 
-Run `pnpm render` after changing `src/policy.ts`. Commit `policy.md` with the
-source change. Run test, typecheck, build, and format before finishing.
+Run `pnpm render` after changing policy source. Commit generated Markdown with
+the source change. Run test, typecheck, build, and format before finishing.
 
 ## Ownership
 
-- Keep this package harness-neutral.
+- Keep shared policy agent-neutral and isolate agent-specific overlays.
 - Put Pi hooks, prompt placement, and subagent integration in `pi-setup`.
 - Put fleet installation, revision stamping, and drift handling in fleet skills.
 - Preserve named exports when possible so consumers can compose profiles.
