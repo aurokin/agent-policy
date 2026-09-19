@@ -39,8 +39,6 @@ test("second-opinion policy remains harness-neutral", () => {
 
 test("communication standards apply only to user-facing messages", () => {
   assert.match(COMMUNICATION_STANDARDS, /only to user-facing messages/);
-  assert.match(COMMUNICATION_STANDARDS, /invoke and apply the `unslop` skill/);
-  assert.match(COMMUNICATION_STANDARDS, /every remaining standard/);
   assert.match(COMMUNICATION_STANDARDS, /never to agent-to-agent messages/);
 });
 

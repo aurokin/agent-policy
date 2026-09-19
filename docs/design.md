@@ -19,9 +19,6 @@ can omit sections that do not apply to a constrained child or profile.
 instructions. Its bytes must equal `GLOBAL_INSTRUCTION_RULES` plus one trailing
 newline. The parity test protects fleet drift detection from false changes.
 
-The `unslop` skill name is shared policy vocabulary, not a harness-specific
-tool name. Any integration that installs this policy must expose that skill.
-
 ## Rule selection
 
 Keep the set focused. Add a rule when capable models otherwise make the same

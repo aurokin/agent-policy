@@ -62,7 +62,6 @@
 ## Communication Standards
 
 - These standards apply only to user-facing messages, never to agent-to-agent messages.
-- Before sending each user-facing message, invoke and apply the `unslop` skill, then apply every remaining standard in this section.
 - Passing checks show that the code runs under those checks. They do not prove that the code does what the user asked.
 - State which relevant behavior you did not verify.
 - Say when you are guessing.
