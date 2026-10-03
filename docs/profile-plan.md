@@ -1,7 +1,7 @@
 # Policy export plan
 
-Status: steps 1–2 done, 2026-10-03. Step 3 waits on the fleet-config-sync
-rework; step 4 needs a go-ahead.
+Status: done, 2026-10-03. Exported on koopa; other hosts update on their next
+fleet-config-sync.
 
 Per-agent profiles are done; the README shows what each agent gets. This plan
 covers exporting them to the current host.
@@ -53,8 +53,7 @@ run `--write` only after the user confirms.
 
 Its job is syncing config. It adds `~/.config/agent-policy/config.json` to its
 tool table, and step 7 becomes: on each host, follow agent-policy's
-`export-policy` skill. Make this change after the in-progress
-fleet-config-sync rework lands.
+`export-policy` skill.
 
 ## Steps
 

@@ -44,9 +44,8 @@ tools, defaults, or product behavior. Add it only to that agent's profile.
 
 - `pi-setup` imports `PI_PROFILE` and adds prompt placement, fixups, and
   child-role filtering.
-- `fleet-config-sync` reads `profiles/claude-code.md` and `profiles/codex.md`,
-  stamps the agent-policy commit, and updates managed blocks in Claude and
-  Codex global instruction files.
+- `fleet-config-sync` syncs `~/.config/agent-policy/config.json` from intent
+  and runs `pnpm export` on each host.
 - `pnpm export` writes the Claude Code, Codex, or Copilot profile, with host
   overrides from `~/.config/agent-policy/config.json`, into that agent's
   global instructions file on the current host.
