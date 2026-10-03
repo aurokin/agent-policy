@@ -6,7 +6,8 @@ either assigned to agents or kept as opt-in.
 ## Profiles
 
 Each profile is rendered to Markdown so you can read exactly what that agent is
-told.
+told. The defaults are my own setup; to change them for yourself, fork this repo
+and edit `PROFILE_DEFAULTS` in [src/profiles.ts](src/profiles.ts).
 
 | Section                 | [Pi](profiles/pi.md) | [Codex](profiles/codex.md) | [Claude Code](profiles/claude-code.md) | [Copilot](profiles/copilot.md) |
 | ----------------------- | -------------------- | -------------------------- | -------------------------------------- | ------------------------------ |
