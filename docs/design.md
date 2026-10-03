@@ -2,14 +2,15 @@
 
 ## Scope
 
-This repo owns shared behavioral instructions and selected agent-specific
-instruction overlays. Shared rules remain useful without knowing whether Pi,
-Codex, Claude, Copilot, or another agent will read them. Agent-specific rules
-must remain isolated from the shared policy and from other agents' profiles.
+This repo owns the policy text each agent's main session reads. Every section
+is either assigned to one or more agent profiles or kept as opt-in. Shared
+sections remain useful without knowing whether Pi, Codex, Claude, Copilot, or
+another agent will read them. Agent-specific rules must remain isolated from
+the shared policy and from other agents' profiles.
 
 Integrations still own filesystem layout, prompt placement, lifecycle hooks,
-tool wiring, and child-session implementation. A dedicated integration may
-also keep its own agent-specific policy, as Pi does.
+tool wiring, and child-session implementation. Pi's subagent role prompts stay
+in `pi-setup` because they only make sense inside Pi's role system.
 
 ## Representation
 
@@ -17,8 +18,9 @@ also keep its own agent-specific policy, as Pi does.
 can omit sections that do not apply to a constrained child or profile.
 `GLOBAL_INSTRUCTION_RULES` joins every section in distribution order.
 
-Agent overlays live in files named for their target, such as `src/copilot.ts`.
-`src/profiles.ts` explicitly composes shared sections with each overlay.
+Agent overlays live in files named for their target, such as `src/copilot.ts`
+and `src/pi.ts`. `src/profiles.ts` explicitly lists each profile's sections and
+the opt-in sections.
 Explicit profiles make it difficult to include one agent's rules in another
 agent's instructions by accident.
 
@@ -26,8 +28,8 @@ agent's instructions by accident.
 instructions. Its bytes must equal `GLOBAL_INSTRUCTION_RULES` plus one trailing
 newline. The parity test protects fleet drift detection from false changes.
 
-Rendered agent profiles live under `profiles/`. Each file must equal its
-TypeScript profile export plus one trailing newline.
+Rendered agent profiles and the opt-in sections live under `profiles/`. Each
+file must equal its TypeScript export plus one trailing newline.
 
 ## Rule selection
 
@@ -46,12 +48,12 @@ tools, defaults, or product behavior. Do not add it to
 
 ## Consumers
 
-- `pi-setup` imports the package and adds Pi workspace guidance, prompt
-  placement, fixups, and child-role filtering.
+- `pi-setup` imports the package and adds its own Workspace copy, prompt
+  placement, fixups, and child-role filtering. It moves to `PI_PROFILE` next.
 - `fleet-config-sync` reads `policy.md`, stamps the agent-policy commit, and
   updates managed blocks in Codex and Claude global instruction files.
-- Copilot consumers can read `profiles/copilot.md` or import
-  `COPILOT_PROFILE`.
+- Codex, Claude Code, and Copilot consumers can read their file under
+  `profiles/` or import the matching `*_PROFILE` export.
 - Live global instruction files are deployment targets, never policy sources.
 
 The dependency direction is always from an integration or deployment tool to

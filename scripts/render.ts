@@ -1,6 +1,6 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { GLOBAL_INSTRUCTION_RULES } from "../src/policy.ts";
-import { COPILOT_PROFILE } from "../src/profiles.ts";
+import { RENDERED_PROFILES } from "../src/profiles.ts";
 
 await writeFile(
   new URL("../policy.md", import.meta.url),
@@ -9,7 +9,6 @@ await writeFile(
 
 const profilesDirectory = new URL("../profiles/", import.meta.url);
 await mkdir(profilesDirectory, { recursive: true });
-await writeFile(
-  new URL("copilot.md", profilesDirectory),
-  `${COPILOT_PROFILE}\n`,
-);
+for (const [fileName, profile] of Object.entries(RENDERED_PROFILES)) {
+  await writeFile(new URL(fileName, profilesDirectory), `${profile}\n`);
+}

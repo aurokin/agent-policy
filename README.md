@@ -1,16 +1,38 @@
 # agent-policy
 
-Shared policy and agent-specific instruction profiles.
+System prompts for the coding agents I use. Every section lives here and is
+either assigned to agents or kept as opt-in.
 
-The TypeScript package exports each named policy section and the assembled
-`GLOBAL_INSTRUCTION_RULES` string. `policy.md` is the canonical rendered form
-used when an agent accepts global Markdown instructions rather than a package.
+## Profiles
 
-Agent-specific overlays remain separate from the shared policy. The Copilot
-profile is exported as `COPILOT_PROFILE` and rendered at
-`profiles/copilot.md`. Integrations still own prompt placement, hooks, tool
-wiring, installation, and drift handling. Pi-specific policy remains in
-`pi-setup`. [docs/design.md](docs/design.md) defines the ownership boundary.
+Each profile is rendered to Markdown so you can read exactly what that agent is
+told.
+
+| Section                 | [Pi](profiles/pi.md) | [Codex](profiles/codex.md) | [Claude Code](profiles/claude-code.md) | [Copilot](profiles/copilot.md) |
+| ----------------------- | -------------------- | -------------------------- | -------------------------------------- | ------------------------------ |
+| Engineering Rules       | ✓                    |                            |                                        |                                |
+| Delegation              | ✓                    | ✓                          | ✓                                      |                                |
+| Safety Rules            | ✓                    |                            |                                        |                                |
+| Testing Guidelines      | ✓                    | ✓                          | ✓                                      | ✓                              |
+| Communication Standards | ✓                    | ✓                          | ✓                                      |                                |
+| TypeScript Guidelines   | ✓                    | ✓                          | ✓                                      | ✓                              |
+| Comment Guidelines      | ✓                    | ✓                          | ✓                                      | ✓                              |
+| Workspace               | ✓                    |                            |                                        |                                |
+| Copilot rules           |                      |                            |                                        | ✓                              |
+
+The Copilot profile is tuned for my own setup. If you are adapting it, you
+probably also want Delegation and Communication Standards from the Codex
+profile.
+
+[Opt-in sections](profiles/opt-in.md) are kept but not loaded anywhere: Second
+Opinions, which I enable on request, and Known Performance Pitfalls.
+
+The TypeScript package exports each section and profile. `policy.md` and
+`GLOBAL_INSTRUCTION_RULES` hold the previous all-sections policy until Pi and
+fleet config sync move to the per-agent profiles; see
+[docs/profile-plan.md](docs/profile-plan.md). Integrations own prompt
+placement, hooks, tool wiring, installation, and drift handling.
+[docs/design.md](docs/design.md) defines the ownership boundary.
 
 ## Commands
 

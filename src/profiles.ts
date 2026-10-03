@@ -1,9 +1,72 @@
 import { COPILOT_INSTRUCTION_SECTIONS } from "./copilot.ts";
-import { GLOBAL_INSTRUCTION_SECTIONS } from "./policy.ts";
+import { PI_WORKSPACE } from "./pi.ts";
+import {
+  COMMENT_GUIDELINES,
+  COMMUNICATION_STANDARDS,
+  DELEGATION,
+  ENGINEERING_POLICY,
+  KNOWN_PERFORMANCE_PITFALLS,
+  SAFETY_RULES,
+  SECOND_OPINIONS,
+  TESTING_GUIDELINES,
+  TYPESCRIPT_GUIDELINES,
+} from "./policy.ts";
+
+export const PI_PROFILE_SECTIONS = [
+  ENGINEERING_POLICY,
+  DELEGATION,
+  SAFETY_RULES,
+  TESTING_GUIDELINES,
+  COMMUNICATION_STANDARDS,
+  TYPESCRIPT_GUIDELINES,
+  COMMENT_GUIDELINES,
+  PI_WORKSPACE,
+] as const;
+
+export const PI_PROFILE = PI_PROFILE_SECTIONS.join("\n\n");
+
+export const CODEX_PROFILE_SECTIONS = [
+  DELEGATION,
+  TESTING_GUIDELINES,
+  COMMUNICATION_STANDARDS,
+  TYPESCRIPT_GUIDELINES,
+  COMMENT_GUIDELINES,
+] as const;
+
+export const CODEX_PROFILE = CODEX_PROFILE_SECTIONS.join("\n\n");
+
+export const CLAUDE_CODE_PROFILE_SECTIONS = [
+  DELEGATION,
+  TESTING_GUIDELINES,
+  COMMUNICATION_STANDARDS,
+  TYPESCRIPT_GUIDELINES,
+  COMMENT_GUIDELINES,
+] as const;
+
+export const CLAUDE_CODE_PROFILE = CLAUDE_CODE_PROFILE_SECTIONS.join("\n\n");
 
 export const COPILOT_PROFILE_SECTIONS = [
-  ...GLOBAL_INSTRUCTION_SECTIONS,
+  TESTING_GUIDELINES,
+  TYPESCRIPT_GUIDELINES,
+  COMMENT_GUIDELINES,
   ...COPILOT_INSTRUCTION_SECTIONS,
 ] as const;
 
 export const COPILOT_PROFILE = COPILOT_PROFILE_SECTIONS.join("\n\n");
+
+/** Kept for occasional manual use; no profile loads these. */
+export const OPT_IN_SECTIONS = [
+  SECOND_OPINIONS,
+  KNOWN_PERFORMANCE_PITFALLS,
+] as const;
+
+export const OPT_IN = OPT_IN_SECTIONS.join("\n\n");
+
+/** Rendered file name under `profiles/` for each composition. */
+export const RENDERED_PROFILES = {
+  "pi.md": PI_PROFILE,
+  "codex.md": CODEX_PROFILE,
+  "claude-code.md": CLAUDE_CODE_PROFILE,
+  "copilot.md": COPILOT_PROFILE,
+  "opt-in.md": OPT_IN,
+} as const;

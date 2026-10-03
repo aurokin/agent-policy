@@ -1,6 +1,6 @@
 {
   "name": "@aurokin/agent-policy",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -9,7 +9,7 @@
       "import": "./dist/index.js"
     },
     "./policy.md": "./policy.md",
-    "./profiles/copilot.md": "./profiles/copilot.md"
+    "./profiles/*.md": "./profiles/*.md"
   },
   "files": [
     "dist",

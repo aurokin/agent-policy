@@ -1,6 +1,6 @@
 # Per-agent profile plan
 
-Status: draft, 2026-10-03. Nothing below is implemented.
+Status: step 1 done, 2026-10-03.
 
 ## Idea
 

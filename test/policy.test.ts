@@ -2,9 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
+  CLAUDE_CODE_PROFILE_SECTIONS,
+  CODEX_PROFILE_SECTIONS,
   COMMUNICATION_STANDARDS,
-  COPILOT_INSTRUCTION_RULES,
-  COPILOT_PROFILE,
+  COPILOT_INSTRUCTION_SECTIONS,
   COPILOT_PROFILE_SECTIONS,
   COPILOT_RULES,
   DELEGATION,
@@ -15,6 +16,10 @@ import {
   ORCHESTRATION,
   ORCHESTRATION_BULLETS,
   ORCHESTRATION_HEADER,
+  OPT_IN_SECTIONS,
+  PI_PROFILE_SECTIONS,
+  PI_WORKSPACE,
+  RENDERED_PROFILES,
   SECOND_OPINIONS,
 } from "../src/index.ts";
 
@@ -26,12 +31,14 @@ test("the rendered policy matches the package source byte for byte", async () =>
   assert.equal(rendered, `${GLOBAL_INSTRUCTION_RULES}\n`);
 });
 
-test("the rendered Copilot profile matches the package source byte for byte", async () => {
-  const rendered = await readFile(
-    new URL("../profiles/copilot.md", import.meta.url),
-    "utf8",
-  );
-  assert.equal(rendered, `${COPILOT_PROFILE}\n`);
+test("each rendered profile matches the package source byte for byte", async () => {
+  for (const [fileName, profile] of Object.entries(RENDERED_PROFILES)) {
+    const rendered = await readFile(
+      new URL(`../profiles/${fileName}`, import.meta.url),
+      "utf8",
+    );
+    assert.equal(rendered, `${profile}\n`, fileName);
+  }
 });
 
 test("sections are separated and ordered once", () => {
@@ -44,14 +51,34 @@ test("sections are separated and ordered once", () => {
   }
 });
 
-test("the Copilot profile composes shared policy with its isolated overlay", () => {
-  assert.equal(COPILOT_PROFILE, COPILOT_PROFILE_SECTIONS.join("\n\n"));
-  assert.equal(
-    COPILOT_PROFILE,
-    `${GLOBAL_INSTRUCTION_RULES}\n\n${COPILOT_INSTRUCTION_RULES}`,
-  );
-  assert.match(COPILOT_RULES, /Do not use computer-use tools/);
-  assert.doesNotMatch(GLOBAL_INSTRUCTION_RULES, /computer-use/);
+test("every section is either assigned to a profile or opt-in", () => {
+  const assigned: readonly string[] = [
+    ...PI_PROFILE_SECTIONS,
+    ...CODEX_PROFILE_SECTIONS,
+    ...CLAUDE_CODE_PROFILE_SECTIONS,
+    ...COPILOT_PROFILE_SECTIONS,
+  ];
+  const optIn: readonly string[] = OPT_IN_SECTIONS;
+  for (const section of [
+    ...GLOBAL_INSTRUCTION_SECTIONS,
+    ...COPILOT_INSTRUCTION_SECTIONS,
+    PI_WORKSPACE,
+  ]) {
+    assert.notEqual(
+      assigned.includes(section),
+      optIn.includes(section),
+      section.slice(0, section.indexOf("\n")),
+    );
+  }
+});
+
+test("agent-specific sections stay in their own profile", () => {
+  const profilesContaining = (section: string) =>
+    Object.entries(RENDERED_PROFILES)
+      .filter(([, profile]) => profile.includes(section))
+      .map(([fileName]) => fileName);
+  assert.deepEqual(profilesContaining(COPILOT_RULES), ["copilot.md"]);
+  assert.deepEqual(profilesContaining(PI_WORKSPACE), ["pi.md"]);
 });
 
 test("second-opinion policy remains harness-neutral", () => {
