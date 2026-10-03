@@ -1,78 +1,72 @@
-# Per-agent profile plan
+# Policy export plan
 
-Status: steps 1–3 done in source, 2026-10-03. Fleet config sync not run.
+Status: draft, 2026-10-03. Nothing below is implemented.
 
-## Idea
+Per-agent profiles are done; the README shows what each agent gets. This plan
+covers exporting them to the current host.
 
-Every policy section lives in this repo. Each section is either assigned to
-one or more agents or left unassigned. Each agent gets a rendered profile in
-`profiles/`, so anyone can see exactly what that agent is told. The README
-links to them.
+## Pi
 
-## Assignments
+Pi's profile is specific to my pi-setup. pi-setup imports `PI_PROFILE` and owns
+placement and child filtering. Pi has no export step and no overrides.
 
-| Section                    | Pi  | Codex | Claude Code | Copilot |
-| -------------------------- | --- | ----- | ----------- | ------- |
-| Engineering Rules          | ✓   |       |             |         |
-| Delegation                 | ✓   | ✓     | ✓           |         |
-| Second Opinions            |     |       |             |         |
-| Safety Rules               | ✓   |       |             |         |
-| Testing Guidelines         | ✓   | ✓     | ✓           | ✓       |
-| Communication Standards    | ✓   | ✓     | ✓           |         |
-| TypeScript Guidelines      | ✓   | ✓     | ✓           | ✓       |
-| Comment Guidelines         | ✓   | ✓     | ✓           | ✓       |
-| Known Performance Pitfalls |     |       |             |         |
-| Copilot Rules              |     |       |             | ✓       |
-| Workspace (from pi-setup)  | ✓   |       |             |         |
+## Flags
 
-Codex and Claude Code drop Engineering Rules and Safety Rules on the
-assumption that their harness prompts already cover them, as Copilot's does.
-That assumption is unverified.
+Each section gets a short name, such as `second-opinions` or `typescript`.
+Codex, Claude Code, and Copilot each have a default on/off flag per section.
+The defaults render to `profiles/` and the README table, which is what other
+readers see. Sections keep one fixed order, so flipping a flag never reorders
+the others.
 
-## Boundary with pi-setup
+A host can override defaults in `~/.config/agent-policy/config.json`:
 
-agent-policy owns the policy text an agent's main session reads. pi-setup owns
-how Pi applies it: hooks, placement, deduplication, child filtering, and the
-subagent role prompts, including the child final-message note. Subagent text
-stays in pi-setup because it only makes sense inside Pi's role system.
+```json
+{ "claude-code": { "second-opinions": true } }
+```
 
-Unassigned sections stay in the source and render to `profiles/opt-in.md`.
-They aren't loaded anywhere. You can paste or enable them when needed:
+Unknown agents or section names are errors. fleet-config-sync syncs this file
+from `~/.dotfiles-private/intent` like any other tool config, so fleet-wide
+and per-host overrides use its existing intent rules.
 
-- Second Opinions: useful on request, but costly in tokens and can cause loops.
-- Known Performance Pitfalls: worth keeping, but too narrow for a system
-  prompt. Revisit if a frontend skill ever exists.
+## Export
 
-TypeScript Guidelines stay in the prompt for now. They're three bullets, so
-a skill would add trigger overhead without saving much context.
+`pnpm export <codex|claude-code|copilot>` shows what would change on this host.
+With `--write`, it backs up the target, replaces the text between the existing
+markers, appends a block if none exists, and skips symlinked targets. Marker
+lines are kept as they are. Drift and revision handling are out of scope here
+and are being reworked separately.
 
-## Copilot note for other readers
+| Agent       | Target                                           |
+| ----------- | ------------------------------------------------ |
+| Claude Code | `~/.claude/CLAUDE.md`                            |
+| Codex       | `~/.codex/AGENTS.md`                             |
+| Copilot     | `~/.copilot/copilot-instructions.md` (to verify) |
 
-The README will say that the Copilot profile is tuned for this setup, and that
-a general Copilot user would probably also want Delegation and Communication
-Standards. That's one sentence, not a second Copilot profile to maintain.
+## Skill
+
+One project skill, `export-policy`, in `.agents/skills/` with a symlink from
+`.claude/skills/`. It says which agent to pass, to show the diff first, and to
+run `--write` only after the user confirms.
+
+## fleet-config-sync
+
+Its job is syncing config. It adds `~/.config/agent-policy/config.json` to its
+tool table, and step 7 becomes: on each host, follow agent-policy's
+`export-policy` skill. Make this change after the in-progress
+fleet-config-sync rework lands.
 
 ## Steps
 
 Each step is a separate request.
 
-1. **agent-policy: profiles.** Define the assignment table in source and copy
-   Pi's Workspace section here. Render
-   `profiles/{pi,codex,claude-code,copilot,opt-in}.md`. Add the README table
-   and the Copilot note. Leave `policy.md` and the `GLOBAL_*` exports unchanged
-   so Pi and config sync see no change yet. The Copilot profile changes now.
-2. **pi-setup: use the Pi profile.** In `extensions/shared/engineering-policy.ts`,
-   swap `GLOBAL_INSTRUCTION_RULES` and the local Workspace section for the Pi
-   profile and the package's Workspace export, which child filtering still
-   needs. This drops Second Opinions and Known Performance Pitfalls from Pi. The dedupe key
-   (`## Engineering Rules`) is still in the Pi profile. pi-setup links this
-   checkout, so building takes effect on this machine. Needs an explicit go.
-3. **Config sync: per-agent files.** Point step 7 of `fleet-config-sync` at
-   `profiles/claude-code.md` and `profiles/codex.md` instead of `policy.md`.
-   Then remove `policy.md` and the `GLOBAL_*` exports. Running the sync across
-   the fleet is a separate authorization.
+1. **Section names and defaults.** Express profiles as flags. Rendered output
+   stays byte-identical.
+2. **Export.** Add the override config, `pnpm export`, the skill, and README
+   notes.
+3. **fleet-config-sync.** Add the config row and replace step 7.
+4. **Run it on koopa.** Separate go-ahead.
 
-## Notes
+## Open questions
 
-- Codex and Claude Code profiles are identical today. They still get one file
-  each, one per config-sync target, so each can diverge without restructuring.
+- Copilot's global instructions path and whether Copilot discovers project
+  skills from `.agents/skills/` or `.claude/skills/`. Verify before step 2.
