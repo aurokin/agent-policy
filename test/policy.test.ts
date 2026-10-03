@@ -50,14 +50,8 @@ test("the Copilot profile composes shared policy with its isolated overlay", () 
     COPILOT_PROFILE,
     `${GLOBAL_INSTRUCTION_RULES}\n\n${COPILOT_INSTRUCTION_RULES}`,
   );
-  assert.match(COPILOT_RULES, /harness defaults for subagents/);
-  assert.match(COPILOT_RULES, /current request explicitly specifies/);
   assert.match(COPILOT_RULES, /Do not use computer-use tools/);
-  assert.match(COPILOT_RULES, /Do not create a pull request/);
-  assert.doesNotMatch(
-    GLOBAL_INSTRUCTION_RULES,
-    /computer-use|harness defaults for subagents/,
-  );
+  assert.doesNotMatch(GLOBAL_INSTRUCTION_RULES, /computer-use/);
 });
 
 test("second-opinion policy remains harness-neutral", () => {

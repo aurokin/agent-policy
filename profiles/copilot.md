@@ -91,6 +91,4 @@
 
 ## Copilot rules
 
-- Trust the harness defaults for subagents. Do not specify a model, context tier, or reasoning effort unless the current request explicitly specifies those settings for the subagent.
 - Do not use computer-use tools unless the user explicitly asks you to interact with an application through its UI.
-- When asked to implement, complete and validate the changes so they are ready for review. Do not create a pull request unless the current request explicitly asks for one.
