@@ -22,7 +22,9 @@ told.
 
 The Pi profile is specific to my
 [pi-setup](https://github.com/aurokin/pi-setup), which composes it into Pi's
-prompt. The Copilot profile is tuned for my own setup. If you are adapting it, you
+prompt.
+
+The Copilot profile is tuned for my own setup. If you are adapting it, you
 probably also want Delegation and Communication Standards from the Codex
 profile.
 
