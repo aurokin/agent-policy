@@ -2,34 +2,19 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
 import {
-  CLAUDE_CODE_PROFILE_SECTIONS,
-  CODEX_PROFILE_SECTIONS,
   COMMUNICATION_STANDARDS,
-  COPILOT_INSTRUCTION_SECTIONS,
-  COPILOT_PROFILE_SECTIONS,
   COPILOT_RULES,
   DELEGATION,
   DELEGATION_BULLETS,
   DELEGATION_HEADER,
-  GLOBAL_INSTRUCTION_RULES,
-  GLOBAL_INSTRUCTION_SECTIONS,
   ORCHESTRATION,
   ORCHESTRATION_BULLETS,
   ORCHESTRATION_HEADER,
-  OPT_IN_SECTIONS,
-  PI_PROFILE_SECTIONS,
   PI_WORKSPACE,
   RENDERED_PROFILES,
   SECOND_OPINIONS,
 } from "../src/index.ts";
-
-test("the rendered policy matches the package source byte for byte", async () => {
-  const rendered = await readFile(
-    new URL("../policy.md", import.meta.url),
-    "utf8",
-  );
-  assert.equal(rendered, `${GLOBAL_INSTRUCTION_RULES}\n`);
-});
+import * as policy from "../src/index.ts";
 
 test("each rendered profile matches the package source byte for byte", async () => {
   for (const [fileName, profile] of Object.entries(RENDERED_PROFILES)) {
@@ -41,34 +26,11 @@ test("each rendered profile matches the package source byte for byte", async () 
   }
 });
 
-test("sections are separated and ordered once", () => {
-  assert.equal(
-    GLOBAL_INSTRUCTION_RULES,
-    GLOBAL_INSTRUCTION_SECTIONS.join("\n\n"),
-  );
-  for (const section of GLOBAL_INSTRUCTION_SECTIONS) {
-    assert.equal(GLOBAL_INSTRUCTION_RULES.split(section).length, 2);
-  }
-});
-
-test("every section is either assigned to a profile or opt-in", () => {
-  const assigned: readonly string[] = [
-    ...PI_PROFILE_SECTIONS,
-    ...CODEX_PROFILE_SECTIONS,
-    ...CLAUDE_CODE_PROFILE_SECTIONS,
-    ...COPILOT_PROFILE_SECTIONS,
-  ];
-  const optIn: readonly string[] = OPT_IN_SECTIONS;
-  for (const section of [
-    ...GLOBAL_INSTRUCTION_SECTIONS,
-    ...COPILOT_INSTRUCTION_SECTIONS,
-    PI_WORKSPACE,
-  ]) {
-    assert.notEqual(
-      assigned.includes(section),
-      optIn.includes(section),
-      section.slice(0, section.indexOf("\n")),
-    );
+test("every section is rendered in a profile or the opt-in file", () => {
+  const rendered = Object.values(RENDERED_PROFILES).join("\n\n");
+  for (const [name, header] of Object.entries(policy)) {
+    if (!name.endsWith("_HEADER") || typeof header !== "string") continue;
+    assert.match(rendered, new RegExp(`^${header}$`, "m"), name);
   }
 });
 

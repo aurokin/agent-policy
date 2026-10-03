@@ -1,6 +1,6 @@
 # Per-agent profile plan
 
-Status: step 1 done, 2026-10-03.
+Status: steps 1–3 done in source, 2026-10-03. Fleet config sync not run.
 
 ## Idea
 

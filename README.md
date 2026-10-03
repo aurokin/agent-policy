@@ -27,11 +27,8 @@ profile.
 [Opt-in sections](profiles/opt-in.md) are kept but not loaded anywhere: Second
 Opinions, which I enable on request, and Known Performance Pitfalls.
 
-The TypeScript package exports each section and profile. `policy.md` and
-`GLOBAL_INSTRUCTION_RULES` hold the previous all-sections policy until Pi and
-fleet config sync move to the per-agent profiles; see
-[docs/profile-plan.md](docs/profile-plan.md). Integrations own prompt
-placement, hooks, tool wiring, installation, and drift handling.
+The TypeScript package exports each section and profile. Integrations own
+prompt placement, hooks, tool wiring, installation, and drift handling.
 [docs/design.md](docs/design.md) defines the ownership boundary.
 
 ## Commands
