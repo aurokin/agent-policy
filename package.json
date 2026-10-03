@@ -1,6 +1,6 @@
 {
   "name": "@aurokin/agent-policy",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "private": true,
   "type": "module",
   "exports": {
@@ -20,6 +20,7 @@
     "format": "prettier --write \"{src,test,scripts}/**/*.ts\" \"*.{json,md}\"",
     "format:check": "prettier --check \"{src,test,scripts}/**/*.ts\" \"*.{json,md}\"",
     "render": "node --experimental-strip-types scripts/render.ts",
+    "export": "node --experimental-strip-types scripts/export.ts",
     "test": "node --test --experimental-strip-types test/*.test.ts",
     "prepare": "pnpm build"
   },

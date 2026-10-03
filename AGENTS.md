@@ -10,6 +10,7 @@
 | Typecheck     | `pnpm check`   |
 | Build         | `pnpm build`   |
 | Format        | `pnpm format`  |
+| Export        | `pnpm export`  |
 
 Run `pnpm render` after changing policy source. Commit generated Markdown with
 the source change. Run test, typecheck, build, and format before finishing.

@@ -1,6 +1,7 @@
 # Policy export plan
 
-Status: draft, 2026-10-03. Nothing below is implemented.
+Status: steps 1–2 done, 2026-10-03. Step 3 waits on the fleet-config-sync
+rework; step 4 needs a go-ahead.
 
 Per-agent profiles are done; the README shows what each agent gets. This plan
 covers exporting them to the current host.
@@ -36,11 +37,11 @@ markers, appends a block if none exists, and skips symlinked targets. Marker
 lines are kept as they are. Drift and revision handling are out of scope here
 and are being reworked separately.
 
-| Agent       | Target                                           |
-| ----------- | ------------------------------------------------ |
-| Claude Code | `~/.claude/CLAUDE.md`                            |
-| Codex       | `~/.codex/AGENTS.md`                             |
-| Copilot     | `~/.copilot/copilot-instructions.md` (to verify) |
+| Agent       | Target                               |
+| ----------- | ------------------------------------ |
+| Claude Code | `~/.claude/CLAUDE.md`                |
+| Codex       | `~/.codex/AGENTS.md`                 |
+| Copilot     | `~/.copilot/copilot-instructions.md` |
 
 ## Skill
 
@@ -66,7 +67,8 @@ Each step is a separate request.
 3. **fleet-config-sync.** Add the config row and replace step 7.
 4. **Run it on koopa.** Separate go-ahead.
 
-## Open questions
+## Verified
 
-- Copilot's global instructions path and whether Copilot discovers project
-  skills from `.agents/skills/` or `.claude/skills/`. Verify before step 2.
+GitHub's Copilot CLI docs list `~/.copilot/copilot-instructions.md` as the
+user-level instructions file and `.github/skills/`, `.agents/skills/`, and
+`.claude/skills/` as project skill locations.

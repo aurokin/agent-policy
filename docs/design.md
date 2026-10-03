@@ -47,6 +47,9 @@ tools, defaults, or product behavior. Add it only to that agent's profile.
 - `fleet-config-sync` reads `profiles/claude-code.md` and `profiles/codex.md`,
   stamps the agent-policy commit, and updates managed blocks in Claude and
   Codex global instruction files.
+- `pnpm export` writes the Claude Code, Codex, or Copilot profile, with host
+  overrides from `~/.config/agent-policy/config.json`, into that agent's
+  global instructions file on the current host.
 - Copilot consumers can read `profiles/copilot.md` or import `COPILOT_PROFILE`.
 - Live global instruction files are deployment targets, never policy sources.
 

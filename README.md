@@ -31,6 +31,23 @@ profile.
 [Opt-in sections](profiles/opt-in.md) are kept but not loaded anywhere: Second
 Opinions, which I enable on request, and Known Performance Pitfalls.
 
+## Export
+
+`pnpm export <claude-code|codex|copilot>` shows how this host's global
+instructions file would change; add `--write` to apply it. Only the text
+between the managed markers changes. The `export-policy` project skill walks an
+agent through it.
+
+To tune a profile on one host, flip sections in
+`~/.config/agent-policy/config.json`, using the names in
+[src/profiles.ts](src/profiles.ts):
+
+```json
+{ "claude-code": { "second-opinions": true } }
+```
+
+Pi isn't exported; pi-setup imports `PI_PROFILE` directly.
+
 The TypeScript package exports each section and profile. Integrations own
 prompt placement, hooks, tool wiring, installation, and drift handling.
 [docs/design.md](docs/design.md) defines the ownership boundary.
@@ -45,6 +62,7 @@ prompt placement, hooks, tool wiring, installation, and drift handling.
 | Typecheck       | `pnpm check`   |
 | Build package   | `pnpm build`   |
 | Format          | `pnpm format`  |
+| Export profile  | `pnpm export`  |
 
 Edit the relevant source file, run `pnpm render`, and commit both source and
 rendered output. Bump the package version when published policy text or exports
