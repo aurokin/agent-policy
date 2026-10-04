@@ -1,7 +1,7 @@
 # Policy export plan
 
-Status: done, 2026-10-03. Exported on koopa; other hosts update on their next
-fleet-config-sync.
+Status: done, 2026-10-03. Exported on every dev host except haste, which was
+offline.
 
 Per-agent profiles are done; the README shows what each agent gets. This plan
 covers exporting them to the current host.
